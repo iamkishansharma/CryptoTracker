@@ -17,8 +17,7 @@ export default function Header({
         styles.headerContaner,
         {backgroundColor: backgroundColor ? backgroundColor : 'white'},
       ]}>
-      <View style={{flex: 1, flexDirection: 'row'}}>
-        <Icon name="menu" size={30} />
+      <View style={{flex: 1,}}>
         <Text style={[styles.title, {color: titleColor ? titleColor : 'red'}]}>
           {title}
         </Text>
