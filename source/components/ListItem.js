@@ -1,7 +1,8 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {images} from '../utils/CoinIcons';
 
-export default function ListItem({name, symbol, price, change, image}) {
+export default function ListItem({name, symbol, price, change}) {
   return (
     <TouchableOpacity style={styles.itemWrapper}>
       <View style={styles.leftSide}>
@@ -9,8 +10,8 @@ export default function ListItem({name, symbol, price, change, image}) {
           width={1}
           height={1}
           source={{
-            uri: image
-              ? image
+            uri: images[symbol]
+              ? images[symbol]
               : 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/800px-Ethereum-icon-purple.svg.png',
           }}
           style={styles.image}
@@ -23,8 +24,12 @@ export default function ListItem({name, symbol, price, change, image}) {
       <View style={styles.rightSide}>
         <View style={styles.titleWrapper}>
           <Text style={styles.title}>${price}</Text>
-          <Text style={[styles.subtitle, {color: 'red', textAlign: 'right'}]}>
-            {change}
+          <Text
+            style={[
+              styles.subtitle,
+              {color: change < 0 ? 'red' : 'lightgreen', textAlign: 'right'},
+            ]}>
+            {change < 0 ? change : '+' + change}
           </Text>
         </View>
       </View>
@@ -39,8 +44,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     borderRadius: 10,
-    marginTop: 24,
-    paddingVertical: 10,
+    margin: 10,
+    paddingVertical: 15,
     paddingHorizontal: 16,
     elevation: 5,
   },

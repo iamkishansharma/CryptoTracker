@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {SafeAreaView, View, Text, StyleSheet, ScrollView} from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  FlatList,
+} from 'react-native';
 // redux
 import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -10,36 +17,43 @@ import Header from '../components/Header';
 import ListItem from '../components/ListItem';
 
 class Home extends Component {
-  componentWillMount() {
+  componentDidMount() {
     this.props.FetchCoinData();
-  }
-
-  renderCoinCards() {
-    const {crypto} = this.props;
-    return crypto.data.map(coin => (
-      <ListItem
-        key={coin.name}
-        name={coin.name}
-        symbol={coin.symbol}
-        price={coin.price_usd}
-        change={coin.percentage_change_24hr}
-      />
-    ));
+    console.log('home component will mount..');
   }
 
   render() {
     const {crypto} = this.props;
     if (crypto.isFetching) {
+      console.log('Loading......', process.env.REACT_APP_BASE_URL);
       return (
-        <View>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'white',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <Spinner
             visible={crypto.isFetching}
             textContent="Loading..."
-            textStyle={{color: 'red'}}
             animation="fade"
+            textStyle={{
+              color: 'green',
+              width: '100%',
+              textAlign: 'center',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}
           />
         </View>
       );
+    }
+
+    // for taking tw0 decomal points
+    function round(num) {
+      var m = Number((Math.abs(num) * 100).toPrecision(15));
+      return (Math.round(m) / 100) * Math.sign(num);
     }
     return (
       <SafeAreaView style={styles.container}>
@@ -49,14 +63,26 @@ class Home extends Component {
           hasButton={true}
           buttonIcon="settings-outline"
           onPress={() => {
-            navigation.navigate('Settings');
+            this.props.navigation.navigate('Settings');
           }}
         />
 
-        <View style={styles.divider} />
+        {/* <View style={styles.divider} /> */}
 
         <View style={styles.bodyBox}>
-          <ScrollView>{this.renderCoinCards()}</ScrollView>
+          <FlatList
+            data={this.props.crypto.data.data}
+            keyExtractor={(item, index) => item.symbol}
+            renderItem={({item}) => (
+              <ListItem
+                key={item.name}
+                name={item.name}
+                symbol={item.symbol}
+                price={round(item.quote.USD.price)}
+                change={round(item.quote.USD.percent_change_24h)}
+              />
+            )}
+          />
         </View>
       </SafeAreaView>
     );
@@ -71,7 +97,6 @@ const styles = StyleSheet.create({
   bodyBox: {
     paddingVertical: 10,
     backgroundColor: 'white',
-    marginHorizontal: 10,
   },
   divider: {
     height: StyleSheet.hairlineWidth,

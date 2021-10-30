@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 // redux
 import {Provider} from 'react-redux';
-import {Store} from './Store';
+import Store from './Store';
 const App = () => {
   return (
     <Provider store={Store}>

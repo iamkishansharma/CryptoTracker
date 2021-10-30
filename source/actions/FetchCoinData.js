@@ -5,7 +5,6 @@ import {
   FETCHING_COINDATA_FAIL,
 } from '../utils/ActionTypes';
 import axios from 'axios';
-import {apiBaseUrl} from '../utils/Constant';
 
 export default function FetchCoinData() {
   return dispatch => {
@@ -14,7 +13,11 @@ export default function FetchCoinData() {
     });
 
     return axios
-      .get(`${apiBaseUrl}/v1/ticker/?limit=10`)
+      .get(`${process.env.REACT_APP_BASE_URL}`, {
+        headers: {
+          'X-CMC_PRO_API_KEY': `${process.env.REACT_APP_API_KEY}`,
+        },
+      })
       .then(res => {
         return dispatch({type: FETCHING_COINDATA_SUCCESS, payload: res.data});
       })

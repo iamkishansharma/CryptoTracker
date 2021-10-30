@@ -7,20 +7,11 @@ import promise from 'redux-promise';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
-import RootReducer from './reducers';
+import rootReducer from './reducers';
 
-const middleware = applyMiddleware(promise, thunk);
+// const middleware = applyMiddleware(promise, thunk);
+const middleware = [thunk];
+// const Store = createStore(RootReducer, applyMiddleware(...middleware));
 
-const Store = createStore(
-  RootReducer,
-  compose(
-    middleware,
-    devTools({
-      name: Platform.OS,
-      hostname: 'localhost',
-      ports: 5678,
-    }),
-  ),
-);
-
+const Store = createStore(rootReducer, applyMiddleware(...middleware));
 export default Store;

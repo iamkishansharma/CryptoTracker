@@ -5,8 +5,8 @@ import {
 } from '../utils/ActionTypes';
 
 const initialState = {
-  isFetching: null,
-  data: [],
+  isFetching: false,
+  data: ['Apple','ball'],
   hasError: false,
   errorMessage: null,
 };
