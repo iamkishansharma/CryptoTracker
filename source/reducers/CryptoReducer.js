@@ -6,7 +6,7 @@ import {
 
 const initialState = {
   isFetching: false,
-  data: ['Apple','ball'],
+  data: [],
   hasError: false,
   errorMessage: null,
 };

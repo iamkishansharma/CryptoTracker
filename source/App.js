@@ -1,14 +1,15 @@
-import React, {Component} from 'react';
+import React from 'react';
 
+import {StatusBar, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+// for navigation
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
+import 'react-native-gesture-handler';
 const Stack = createNativeStackNavigator();
 import Home from './screens/Home';
 import Details from './screens/Details';
 import Settings from './screens/Settings';
-import {StatusBar, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 // redux
 import {Provider} from 'react-redux';

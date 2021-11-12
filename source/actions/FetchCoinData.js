@@ -6,6 +6,8 @@ import {
 } from '../utils/ActionTypes';
 import axios from 'axios';
 
+// env data
+import {URL, KEY} from '../utils/Constant';
 export default function FetchCoinData() {
   return dispatch => {
     dispatch({
@@ -13,9 +15,9 @@ export default function FetchCoinData() {
     });
 
     return axios
-      .get(`${process.env.REACT_APP_BASE_URL}`, {
+      .get(`${URL}`, {
         headers: {
-          'X-CMC_PRO_API_KEY': `${process.env.REACT_APP_API_KEY}`,
+          'X-CMC_PRO_API_KEY': `${KEY}`,
         },
       })
       .then(res => {

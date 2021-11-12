@@ -12,6 +12,8 @@ import {connect} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import FetchCoinData from '../actions/FetchCoinData';
 
+// env data
+import {URL, KEY} from '../utils/Constant';
 // componments
 import Header from '../components/Header';
 import ListItem from '../components/ListItem';
@@ -25,7 +27,8 @@ class Home extends Component {
   render() {
     const {crypto} = this.props;
     if (crypto.isFetching) {
-      console.log('Loading......', process.env.REACT_APP_BASE_URL);
+      console.log('Loading......', URL, KEY);
+      console.log('Data......', crypto.data);
       return (
         <View
           style={{
@@ -67,15 +70,13 @@ class Home extends Component {
           }}
         />
 
-        {/* <View style={styles.divider} /> */}
-
         <View style={styles.bodyBox}>
           <FlatList
             data={this.props.crypto.data.data}
             keyExtractor={(item, index) => item.symbol}
-            renderItem={({item}) => (
+            renderItem={({item, index}) => (
               <ListItem
-                key={item.name}
+                key={index}
                 name={item.name}
                 symbol={item.symbol}
                 price={round(item.quote.USD.price)}
