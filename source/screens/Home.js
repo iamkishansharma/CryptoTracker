@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -13,7 +13,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import FetchCoinData from '../actions/FetchCoinData';
 
 // env data
-import {URL, KEY} from '../utils/Constant';
+import {URL, KEY, round} from '../utils/Constant';
 // componments
 import Header from '../components/Header';
 import ListItem from '../components/ListItem';
@@ -26,6 +26,7 @@ class Home extends Component {
 
   render() {
     const {crypto} = this.props;
+
     if (crypto.isFetching) {
       console.log('Loading......', URL, KEY);
       console.log('Data......', crypto.data);
@@ -53,11 +54,6 @@ class Home extends Component {
       );
     }
 
-    // for taking tw0 decomal points
-    function round(num) {
-      var m = Number((Math.abs(num) * 100).toPrecision(15));
-      return (Math.round(m) / 100) * Math.sign(num);
-    }
     return (
       <SafeAreaView style={styles.container}>
         <Header
@@ -71,19 +67,37 @@ class Home extends Component {
         />
 
         <View style={styles.bodyBox}>
-          <FlatList
-            data={this.props.crypto.data.data}
-            keyExtractor={(item, index) => item.symbol}
-            renderItem={({item, index}) => (
-              <ListItem
-                key={index}
-                name={item.name}
-                symbol={item.symbol}
-                price={round(item.quote.USD.price)}
-                change={round(item.quote.USD.percent_change_24h)}
-              />
-            )}
-          />
+          {!this.props.crypto.hasError ? (
+            <FlatList
+              data={this.props.crypto.data.data}
+              keyExtractor={(item, index) => item.symbol}
+              renderItem={({item, index}) => (
+                <ListItem
+                  key={index}
+                  name={item.name}
+                  symbol={item.symbol}
+                  price={round(item.quote.USD.price)}
+                  change={round(item.quote.USD.percent_change_24h)}
+                  onPress={() => {
+                    this.props.navigation.navigate('Details', {item});
+                  }}
+                />
+              )}
+            />
+          ) : (
+            <View style={{backgroundColor: 'blue'}}>
+              <Text
+                style={{
+                  color: 'red',
+                  textAlign: 'center',
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                }}>
+                Sorry!{'\n'}
+                No internet connection
+              </Text>
+            </View>
+          )}
         </View>
       </SafeAreaView>
     );
@@ -97,6 +111,7 @@ const styles = StyleSheet.create({
   },
   bodyBox: {
     paddingVertical: 10,
+    flex: 1,
     backgroundColor: 'white',
   },
   divider: {

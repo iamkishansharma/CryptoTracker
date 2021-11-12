@@ -2,9 +2,9 @@ import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {images} from '../utils/CoinIcons';
 
-export default function ListItem({name, symbol, price, change}) {
+export default function ListItem({name, symbol, price, change, onPress}) {
   return (
-    <TouchableOpacity style={styles.itemWrapper}>
+    <TouchableOpacity style={styles.itemWrapper} onPress={onPress}>
       <View style={styles.leftSide}>
         <Image
           width={1}
@@ -12,7 +12,7 @@ export default function ListItem({name, symbol, price, change}) {
           source={{
             uri: images[symbol]
               ? images[symbol]
-              : 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Ethereum-icon-purple.svg/800px-Ethereum-icon-purple.svg.png',
+              : 'https://thumbs.dreamstime.com/b/no-image-available-icon-vector-illustration-flat-design-140633878.jpg',
           }}
           style={styles.image}
         />
